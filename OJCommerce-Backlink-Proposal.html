@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OJCommerce — Detailed Backlink Proposal</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0a1628; color: #333; min-height: 100vh; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #0a1628 0%, #1a365d 50%, #0066FF 100%);
+    padding: 50px 40px 40px;
+    text-align: center;
+    color: #fff;
+  }
+  .header h1 { font-size: 34px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
+  .header .subtitle { font-size: 16px; color: #a0c4ff; font-weight: 400; margin-bottom: 10px; }
+  .header .date { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 28px; }
+  .header .stats-row { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+  .stat-box {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 16px 24px;
+    text-align: center;
+    min-width: 150px;
+  }
+  .stat-box .number { font-size: 28px; font-weight: 800; color: #00C9A7; }
+  .stat-box .label { font-size: 11px; color: #a0c4ff; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+  /* Navigation */
+  .nav-bar {
+    background: #0f1d32;
+    padding: 0 40px;
+    display: flex;
+    gap: 4px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 2px solid #1a365d;
+    overflow-x: auto;
+  }
+  .nav-btn {
+    padding: 14px 24px;
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.05); }
+  .nav-btn.active { color: #fff; border-bottom-color: #0066FF; background: rgba(0,102,255,0.1); }
+  .nav-btn .badge {
+    background: #0066FF;
+    color: #fff;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 6px;
+    font-weight: 700;
+  }
+  .nav-btn.active .badge { background: #00C9A7; }
+
+  /* Content */
+  .content { background: #f7f9fc; min-height: 60vh; }
+  .tab-panel { display: none; padding: 30px 40px 60px; max-width: 1400px; margin: 0 auto; }
+  .tab-panel.active { display: block; }
+
+  /* Section Headers */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .section-header h2 { font-size: 24px; color: #0a1628; font-weight: 700; }
+
+  .section-desc {
+    background: #fff;
+    border-left: 4px solid #0066FF;
+    padding: 16px 20px;
+    border-radius: 0 10px 10px 0;
+    margin-bottom: 28px;
+    font-size: 14px;
+    color: #555;
+    line-height: 1.7;
+  }
+  .section-desc strong { color: #0a1628; }
+
+  /* Cards */
+  .info-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    margin-bottom: 20px;
+  }
+  .info-card h3 { font-size: 18px; color: #0a1628; margin-bottom: 12px; }
+  .info-card p { font-size: 14px; color: #555; line-height: 1.7; }
+
+  /* Strategy Cards */
+  .strategy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  .strategy-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border-top: 4px solid #0066FF;
+  }
+  .strategy-card.primary { border-top-color: #00C9A7; }
+  .strategy-card.secondary { border-top-color: #8B5CF6; }
+  .strategy-card h3 { font-size: 18px; color: #0a1628; margin-bottom: 6px; }
+  .strategy-card .pct { font-size: 36px; font-weight: 800; color: #0066FF; margin-bottom: 8px; }
+  .strategy-card.primary .pct { color: #00C9A7; }
+  .strategy-card.secondary .pct { color: #8B5CF6; }
+  .strategy-card p { font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 10px; }
+  .strategy-card ul { font-size: 13px; color: #555; line-height: 1.8; padding-left: 18px; }
+
+  /* Table */
+  .table-wrapper {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    overflow: hidden;
+    margin-bottom: 30px;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    background: #0a1628;
+    color: #fff;
+    padding: 14px 14px;
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  thead th:first-child { width: 36px; text-align: center; }
+  tbody tr { border-bottom: 1px solid #f0f0f0; transition: background 0.2s; }
+  tbody tr:hover { background: #f0f7ff; }
+  tbody td { padding: 12px 14px; vertical-align: middle; }
+  tbody td:first-child { text-align: center; color: #999; font-weight: 600; }
+
+  .site-name { font-weight: 700; color: #0a1628; display: block; margin-bottom: 2px; font-size: 13px; }
+  .site-url { font-size: 11px; color: #0066FF; text-decoration: none; word-break: break-all; }
+  .site-url:hover { text-decoration: underline; }
+
+  .dr-pill {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    min-width: 44px;
+  }
+  .dr-pill.gold { background: #FFF8E1; color: #B8860B; }
+  .dr-pill.blue { background: #E8F4FD; color: #0066FF; }
+  .dr-pill.green { background: #D1FAE5; color: #065F46; }
+
+  .traffic-pill {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    background: #ECFDF5;
+    color: #047857;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    margin: 1px 2px;
+  }
+  .tag.niche-edit { background: #EDE9FE; color: #6D28D9; }
+  .tag.roundup { background: #DBEAFE; color: #1D4ED8; }
+  .tag.trend { background: #FEF3C7; color: #92400E; }
+  .tag.guide { background: #D1FAE5; color: #065F46; }
+  .tag.updated { background: #D1FAE5; color: #065F46; }
+  .tag.recent { background: #FFF8E1; color: #B8860B; }
+
+  .fit-text { font-size: 12px; color: #555; line-height: 1.5; }
+
+  /* Benchmarks */
+  .benchmark-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 30px;
+  }
+  .benchmark-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    text-align: center;
+    border-bottom: 3px solid #e2e8f0;
+  }
+  .benchmark-card.pass { border-bottom-color: #10B981; }
+  .benchmark-card .metric { font-size: 13px; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; font-weight: 600; }
+  .benchmark-card .value { font-size: 28px; font-weight: 800; color: #0a1628; margin-bottom: 4px; }
+  .benchmark-card .detail { font-size: 12px; color: #666; }
+
+  /* Timeline */
+  .timeline { display: flex; flex-direction: column; gap: 16px; margin-bottom: 30px; }
+  .timeline-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border-left: 4px solid #0066FF;
+  }
+  .timeline-item .week {
+    background: #0066FF;
+    color: #fff;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    min-width: 80px;
+    text-align: center;
+  }
+  .timeline-item .week.m1 { background: #10B981; }
+  .timeline-item .week.m2 { background: #8B5CF6; }
+  .timeline-item .week.m3 { background: #F59E0B; }
+  .tl-content h4 { font-size: 15px; color: #0a1628; margin-bottom: 4px; }
+  .tl-content p { font-size: 13px; color: #666; line-height: 1.5; }
+
+  /* Pricing */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  .price-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    text-align: center;
+    border-top: 4px solid #e2e8f0;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .price-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+  .price-card.recommended { border-top-color: #0066FF; }
+  .price-card .plan-name { font-size: 20px; font-weight: 700; color: #0a1628; margin-bottom: 4px; }
+  .price-card .plan-desc { font-size: 13px; color: #999; margin-bottom: 16px; }
+  .price-card .price { font-size: 36px; font-weight: 800; color: #0066FF; margin-bottom: 4px; }
+  .price-card .price-note { font-size: 12px; color: #999; margin-bottom: 20px; }
+  .price-card ul { text-align: left; font-size: 13px; color: #555; line-height: 2; list-style: none; padding: 0; }
+  .price-card ul li::before { content: "✓ "; color: #10B981; font-weight: 700; }
+  .price-card .rec-badge {
+    display: inline-block;
+    background: #0066FF;
+    color: #fff;
+    padding: 4px 14px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  /* Footer */
+  .footer {
+    background: #0a1628;
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+  }
+
+  /* Print */
+  @media print {
+    .nav-bar { display: none !important; }
+    .tab-panel { display: block !important; page-break-before: always; }
+    .header { padding: 30px; }
+    body { background: #fff; }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header { padding: 30px 20px; }
+    .header h1 { font-size: 22px; }
+    .stat-box { min-width: 110px; padding: 12px 14px; }
+    .stat-box .number { font-size: 22px; }
+    .nav-bar { padding: 0 10px; }
+    .nav-btn { padding: 12px 14px; font-size: 12px; }
+    .tab-panel { padding: 20px 16px; }
+    .table-wrapper { overflow-x: auto; }
+    table { min-width: 1000px; }
+    .strategy-grid, .benchmark-grid, .pricing-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>OJCommerce — Backlink Acquisition Proposal</h1>
+  <p class="subtitle">Niche Edits in Existing High-Traffic Articles + New Content Placements</p>
+  <p class="date">Prepared: February 2026 | Proposal Version 1.0</p>
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="number">4</div>
+      <div class="label">Backlinks / Month</div>
+    </div>
+    <div class="stat-box">
+      <div class="number">DR 65-95</div>
+      <div class="label">Domain Range</div>
+    </div>
+    <div class="stat-box">
+      <div class="number">60/40</div>
+      <div class="label">Niche Edit / New Content</div>
+    </div>
+    <div class="stat-box">
+      <div class="number">15</div>
+      <div class="label">Sample Placements</div>
+    </div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav-bar">
+  <button class="nav-btn active" onclick="switchTab('strategy')">Strategy Overview</button>
+  <button class="nav-btn" onclick="switchTab('samples')">Sample Live Placements <span class="badge">15</span></button>
+  <button class="nav-btn" onclick="switchTab('benchmarks')">Benchmarks & Criteria</button>
+  <button class="nav-btn" onclick="switchTab('timeline')">Timeline & Deliverables</button>
+</div>
+
+<!-- Content -->
+<div class="content">
+
+  <!-- STRATEGY -->
+  <div class="tab-panel active" id="tab-strategy">
+    <div class="section-header">
+      <h2>Strategy Overview</h2>
+    </div>
+    <div class="section-desc">
+      <strong>Our approach prioritizes placements within already ranking, traffic-driven articles</strong> to deliver immediate referral value from Day 1. We combine niche edits (link insertions into existing content) with strategic new content placements for long-term brand authority.
+    </div>
+
+    <div class="strategy-grid">
+      <div class="strategy-card primary">
+        <div class="pct">2-3 / mo</div>
+        <h3>Niche Edits / Link Insertions</h3>
+        <p>Contextual link placements within existing articles that are already ranking and receiving organic traffic. This forms the majority of the 4 monthly backlinks.</p>
+        <ul>
+          <li>Articles already indexed and ranking on Google</li>
+          <li>Proven organic traffic to the target page</li>
+          <li>Immediate referral traffic potential</li>
+          <li>Contextually relevant anchor text</li>
+          <li>In-content placement (no sidebar/footer)</li>
+        </ul>
+      </div>
+      <div class="strategy-card secondary">
+        <div class="pct">1-2 / mo</div>
+        <h3>New Content Placements</h3>
+        <p>Guest contributions, PR features, and expert quotes on high-authority publications for brand visibility and long-term SEO equity.</p>
+        <ul>
+          <li>Guest posts on sites with open contributor programs</li>
+          <li>HARO / expert quote placements (DR 80-95)</li>
+          <li>Product features and roundup inclusions</li>
+          <li>PR-driven editorial mentions</li>
+          <li>Builds brand authority over time</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h3>Why This Blended Approach?</h3>
+      <p>
+        <strong>Niche edits deliver immediate value</strong> — the article is already ranking, already getting traffic, and Google has already indexed it. Adding a contextual link to OJCommerce means referral traffic starts flowing immediately, without waiting months for a new article to rank.<br><br>
+        <strong>New content placements build long-term authority</strong> — guest posts, expert quotes, and PR features create brand mentions across the web, diversify the backlink profile, and establish OJCommerce as a trusted name in the home/furniture space.<br><br>
+        <strong>Together, they create a natural, sustainable link profile</strong> that Google rewards — a healthy mix of editorial mentions, contextual links, and branded references across high-authority domains.
+      </p>
+    </div>
+  </div>
+
+  <!-- SAMPLE PLACEMENTS -->
+  <div class="tab-panel" id="tab-samples">
+    <div class="section-header">
+      <h2>Sample Live Article Placements</h2>
+    </div>
+    <div class="section-desc">
+      <strong>These are real, live articles currently ranking on Google</strong> in the home, furniture, and interior design niche. Each article represents a potential niche edit opportunity where an OJCommerce link could be contextually inserted. Traffic estimates are based on publicly available domain-level data and industry benchmarks.
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Article / URL</th>
+            <th>DR</th>
+            <th>Est. Page Traffic</th>
+            <th>Type</th>
+            <th>Content Freshness</th>
+            <th>Link Insertion Angle for OJCommerce</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>
+              <span class="site-name">CNN Underscored — Best Outdoor Patio Furniture</span>
+              <a class="site-url" href="https://www.cnn.com/cnn-underscored/home/best-outdoor-furniture" target="_blank">cnn.com/cnn-underscored/home/best-outdoor-furniture</a>
+            </td>
+            <td><span class="dr-pill gold">95</span></td>
+            <td><span class="traffic-pill">50K-100K/mo</span></td>
+            <td><span class="tag roundup">Product Roundup</span></td>
+            <td><span class="tag updated">Updated 2025</span></td>
+            <td class="fit-text">OJCommerce added as a retailer for outdoor dining sets, patio sectionals, or budget patio furniture within the "32 Best" list</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>
+              <span class="site-name">Houzz — 25 Home Design Trends Defining 2026</span>
+              <a class="site-url" href="https://www.houzz.com/magazine/25-home-design-trends-defining-how-well-live-in-2026-stsetivw-vs~183837788" target="_blank">houzz.com/magazine/25-home-design-trends-2026</a>
+            </td>
+            <td><span class="dr-pill gold">92</span></td>
+            <td><span class="traffic-pill">30K-60K/mo</span></td>
+            <td><span class="tag trend">Trend Article</span></td>
+            <td><span class="tag updated">Published 2026</span></td>
+            <td class="fit-text">Link OJCommerce when article mentions trending furniture styles — modular sofas, curved furniture, sustainable materials</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>
+              <span class="site-name">HGTV — 105 Best Cheap Patio Furniture for 2025</span>
+              <a class="site-url" href="https://www.hgtv.com/shopping/furniture-and-accessories/buying-guide-to-patio-furniture-for-every-budget" target="_blank">hgtv.com/.../buying-guide-to-patio-furniture</a>
+            </td>
+            <td><span class="dr-pill gold">90</span></td>
+            <td><span class="traffic-pill">40K-80K/mo</span></td>
+            <td><span class="tag guide">Buying Guide</span></td>
+            <td><span class="tag updated">Updated 2025</span></td>
+            <td class="fit-text">Natural fit for affordable/budget patio furniture mentions — OJCommerce positioned as a value retailer</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>
+              <span class="site-name">Bob Vila — 20 Best Furniture Brands of 2025</span>
+              <a class="site-url" href="https://www.bobvila.com/articles/best-furniture-brands/" target="_blank">bobvila.com/articles/best-furniture-brands/</a>
+            </td>
+            <td><span class="dr-pill gold">85</span></td>
+            <td><span class="traffic-pill">20K-40K/mo</span></td>
+            <td><span class="tag roundup">Brand Roundup</span></td>
+            <td><span class="tag updated">Updated 2025</span></td>
+            <td class="fit-text">OJCommerce mentioned as an e-commerce destination for multi-brand furniture shopping at competitive prices</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>
+              <span class="site-name">Bob Vila — 20 Best Sofa Brands of 2025</span>
+              <a class="site-url" href="https://www.bobvila.com/articles/best-sofa-brands/" target="_blank">bobvila.com/articles/best-sofa-brands/</a>
+            </td>
+            <td><span class="dr-pill gold">85</span></td>
+            <td><span class="traffic-pill">15K-30K/mo</span></td>
+            <td><span class="tag roundup">Brand Roundup</span></td>
+            <td><span class="tag updated">Updated 2025</span></td>
+            <td class="fit-text">Reference OJCommerce as an online marketplace offering a range of sofa brands at competitive prices</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>
+              <span class="site-name">This Old House — 5 Best Patio Furniture Sets</span>
+              <a class="site-url" href="https://www.thisoldhouse.com/furniture/best-patio-furniture" target="_blank">thisoldhouse.com/furniture/best-patio-furniture</a>
+            </td>
+            <td><span class="dr-pill gold">86</span></td>
+            <td><span class="traffic-pill">15K-30K/mo</span></td>
+            <td><span class="tag roundup">Product Review</span></td>
+            <td><span class="tag updated">Updated 2025</span></td>
+            <td class="fit-text">OJCommerce linked as a source for affordable patio furniture sets and outdoor dining sets</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>
+              <span class="site-name">Reviewed (USA Today) — Best Patio Furniture 2026</span>
+              <a class="site-url" href="https://www.reviewed.com/home-outdoors/best-right-now/best-outdoor-patio-furniture" target="_blank">reviewed.com/.../best-outdoor-patio-furniture</a>
+            </td>
+            <td><span class="dr-pill gold">85</span></td>
+            <td><span class="traffic-pill">10K-25K/mo</span></td>
+            <td><span class="tag roundup">Product Review</span></td>
+            <td><span class="tag updated">Published 2026</span></td>
+            <td class="fit-text">OJCommerce referenced as a retailer for patio furniture sets and outdoor living essentials</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>
+              <span class="site-name">Apartment Therapy — Best Sofas for Small Spaces</span>
+              <a class="site-url" href="https://www.apartmenttherapy.com/best-small-space-sofas-37520392" target="_blank">apartmenttherapy.com/best-small-space-sofas</a>
+            </td>
+            <td><span class="dr-pill gold">82</span></td>
+            <td><span class="traffic-pill">10K-20K/mo</span></td>
+            <td><span class="tag roundup">Product Roundup</span></td>
+            <td><span class="tag updated">Updated 2025</span></td>
+            <td class="fit-text">OJCommerce linked as an additional retailer for affordable compact sofas and apartment furniture</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>
+              <span class="site-name">Apartment Therapy — Home Office Furniture Guide</span>
+              <a class="site-url" href="https://www.apartmenttherapy.com/how-to-choose-home-office-furniture-36826681" target="_blank">apartmenttherapy.com/how-to-choose-home-office-furniture</a>
+            </td>
+            <td><span class="dr-pill gold">82</span></td>
+            <td><span class="traffic-pill">8K-15K/mo</span></td>
+            <td><span class="tag guide">Expert Guide</span></td>
+            <td><span class="tag updated">Updated 2025</span></td>
+            <td class="fit-text">OJCommerce added to the recommended retailers list for home office desks, chairs, and storage</td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td>
+              <span class="site-name">Taste of Home — Best Dining Room Tables 2026</span>
+              <a class="site-url" href="https://www.tasteofhome.com/collection/best-dining-room-tables/" target="_blank">tasteofhome.com/collection/best-dining-room-tables/</a>
+            </td>
+            <td><span class="dr-pill gold">82</span></td>
+            <td><span class="traffic-pill">8K-15K/mo</span></td>
+            <td><span class="tag roundup">Product Review</span></td>
+            <td><span class="tag updated">Published 2026</span></td>
+            <td class="fit-text">OJCommerce linked as a source for dining tables and dining room furniture sets</td>
+          </tr>
+          <tr>
+            <td>11</td>
+            <td>
+              <span class="site-name">Homes & Gardens — Living Room Trends 2026</span>
+              <a class="site-url" href="https://www.homesandgardens.com/interior-design/living-rooms/living-room-trends-2026" target="_blank">homesandgardens.com/.../living-room-trends-2026</a>
+            </td>
+            <td><span class="dr-pill blue">80</span></td>
+            <td><span class="traffic-pill">10K-20K/mo</span></td>
+            <td><span class="tag trend">Trend Article</span></td>
+            <td><span class="tag updated">Published 2026</span></td>
+            <td class="fit-text">Link OJCommerce in sections about modular sofas, statement furniture, or trending living room pieces</td>
+          </tr>
+          <tr>
+            <td>12</td>
+            <td>
+              <span class="site-name">Homes & Gardens — Bedroom Furniture Trends 2025</span>
+              <a class="site-url" href="https://www.homesandgardens.com/interior-design/bedroom-furniture-trends" target="_blank">homesandgardens.com/.../bedroom-furniture-trends</a>
+            </td>
+            <td><span class="dr-pill blue">80</span></td>
+            <td><span class="traffic-pill">8K-15K/mo</span></td>
+            <td><span class="tag trend">Trend Article</span></td>
+            <td><span class="tag updated">Updated 2025</span></td>
+            <td class="fit-text">OJCommerce linked for bedroom furniture categories — bed frames, nightstands, dressers, storage</td>
+          </tr>
+          <tr>
+            <td>13</td>
+            <td>
+              <span class="site-name">Dwell — Home Design Trends That Will Rule 2026</span>
+              <a class="site-url" href="https://www.dwell.com/article/2026-home-design-trends-1755f59c" target="_blank">dwell.com/article/2026-home-design-trends</a>
+            </td>
+            <td><span class="dr-pill gold">82</span></td>
+            <td><span class="traffic-pill">8K-15K/mo</span></td>
+            <td><span class="tag trend">Trend Article</span></td>
+            <td><span class="tag updated">Published 2026</span></td>
+            <td class="fit-text">OJCommerce referenced for trending furniture styles or affordable alternatives to designer pieces</td>
+          </tr>
+          <tr>
+            <td>14</td>
+            <td>
+              <span class="site-name">CNN Underscored — Best Living Room Furniture</span>
+              <a class="site-url" href="https://www.cnn.com/cnn-underscored/home/best-living-room-furniture" target="_blank">cnn.com/cnn-underscored/home/best-living-room-furniture</a>
+            </td>
+            <td><span class="dr-pill gold">95</span></td>
+            <td><span class="traffic-pill">30K-50K/mo</span></td>
+            <td><span class="tag roundup">Expert Picks</span></td>
+            <td><span class="tag updated">Updated 2025</span></td>
+            <td class="fit-text">OJCommerce positioned as a recommended retailer for living room furniture essentials</td>
+          </tr>
+          <tr>
+            <td>15</td>
+            <td>
+              <span class="site-name">Living Cozy — 30 Best Places to Buy Affordable Furniture</span>
+              <a class="site-url" href="https://www.livingcozy.com/blog/best-places-to-buy-affordable-furniture" target="_blank">livingcozy.com/blog/best-places-to-buy-affordable-furniture</a>
+            </td>
+            <td><span class="dr-pill blue">65</span></td>
+            <td><span class="traffic-pill">5K-10K/mo</span></td>
+            <td><span class="tag roundup">Retailer Roundup</span></td>
+            <td><span class="tag updated">Updated Sept 2025</span></td>
+            <td class="fit-text">OJCommerce added to the list of best places to buy affordable furniture online — high-intent buying audience</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-card">
+      <h3>Important Notes on Sample Placements</h3>
+      <p>
+        <strong>These are representative target articles</strong> to demonstrate the type, quality, and relevance of placements we pursue. They are not confirmed or guaranteed placements. Actual placement URLs will be confirmed during outreach and shared for pre-approval before any link goes live.<br><br>
+        <strong>Estimated page traffic</strong> reflects the organic traffic each article currently receives — not the traffic OJCommerce would receive. Referral traffic to OJCommerce from each placement typically ranges from 0.5%-3% of the article's total page visitors, depending on link position and relevance.<br><br>
+        <strong>Outreach success rate:</strong> To consistently deliver 4 quality backlinks per month, we prospect and outreach to 15-20+ target articles each month. Not every site will accept — acceptance rates vary from 5-15% for top-tier publications (DR 80+) to 40-60% for mid-tier sites (DR 50-70). Our pipeline ensures we always have enough targets in play to hit the monthly deliverable.<br><br>
+        <strong>All articles listed are currently live, indexed, and ranking</strong> for relevant keywords in the home, furniture, and interior design space. Each article has been updated within the last 12 months, confirming active editorial maintenance.
+      </p>
+    </div>
+  </div>
+
+  <!-- BENCHMARKS -->
+  <div class="tab-panel" id="tab-benchmarks">
+    <div class="section-header">
+      <h2>Quality Benchmarks & Selection Criteria</h2>
+    </div>
+    <div class="section-desc">
+      <strong>Every placement must pass our qualification criteria before we proceed.</strong> These benchmarks ensure that every backlink delivers real referral potential and SEO value for OJCommerce.
+    </div>
+
+    <h3 style="font-size: 18px; color: #0a1628; margin-bottom: 16px;">Domain-Level Benchmarks</h3>
+    <div class="benchmark-grid">
+      <div class="benchmark-card pass">
+        <div class="metric">Minimum Domain Rating</div>
+        <div class="value">DR 50+</div>
+        <div class="detail">Ensures strong domain authority and link equity transfer</div>
+      </div>
+      <div class="benchmark-card pass">
+        <div class="metric">Domain Organic Traffic</div>
+        <div class="value">10K+/mo</div>
+        <div class="detail">Minimum monthly organic traffic at domain level</div>
+      </div>
+      <div class="benchmark-card pass">
+        <div class="metric">Niche Relevance</div>
+        <div class="value">85%+</div>
+        <div class="detail">Content must be relevant to home, furniture, decor, or design</div>
+      </div>
+      <div class="benchmark-card pass">
+        <div class="metric">Spam Score</div>
+        <div class="value">&lt; 5%</div>
+        <div class="detail">Low spam score verified via Moz or Ahrefs</div>
+      </div>
+    </div>
+
+    <h3 style="font-size: 18px; color: #0a1628; margin: 24px 0 16px;">Page-Level Benchmarks (For Niche Edits)</h3>
+    <div class="benchmark-grid">
+      <div class="benchmark-card pass">
+        <div class="metric">Min. Page Traffic</div>
+        <div class="value">500+/mo</div>
+        <div class="detail">Target page must receive minimum 500 organic visits/month</div>
+      </div>
+      <div class="benchmark-card pass">
+        <div class="metric">Ranking Keywords</div>
+        <div class="value">10+</div>
+        <div class="detail">Page must rank for at least 10 relevant keywords</div>
+      </div>
+      <div class="benchmark-card pass">
+        <div class="metric">Content Freshness</div>
+        <div class="value">&lt; 12 mo</div>
+        <div class="detail">Article must be updated within the last 12 months</div>
+      </div>
+      <div class="benchmark-card pass">
+        <div class="metric">Link Placement</div>
+        <div class="value">In-Content</div>
+        <div class="detail">Contextual placement within body text only — no sidebar or footer</div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h3>What We Reject</h3>
+      <p>
+        We do not pursue placements on sites or pages that fail any of the following checks:<br><br>
+        &#10060; Domain with no organic traffic or declining traffic trend<br>
+        &#10060; Pages not indexed by Google or de-indexed<br>
+        &#10060; Thin content pages (under 500 words)<br>
+        &#10060; Pages with excessive outbound links (50+ external links)<br>
+        &#10060; PBN (Private Blog Network) sites or link farms<br>
+        &#10060; Sites with spam score above 5%<br>
+        &#10060; Articles not updated in the past 18+ months<br>
+        &#10060; Irrelevant niches (no topical connection to home/furniture)
+      </p>
+    </div>
+
+    <div class="info-card" style="margin-top: 20px;">
+      <h3>Pre-Placement Validation Process</h3>
+      <p>
+        Before any placement is finalized, we run a 5-step validation:<br><br>
+        <strong>1. Domain Audit</strong> — DR, traffic trend, spam score, backlink profile quality<br>
+        <strong>2. Page-Level Check</strong> — Organic traffic, ranking keywords, keyword positions, index status<br>
+        <strong>3. Content Review</strong> — Relevance, freshness, word count, editorial quality<br>
+        <strong>4. Link Profile Check</strong> — Existing outbound links, anchor text distribution, nofollow ratio<br>
+        <strong>5. Client Approval</strong> — Final placement URL shared with you for sign-off before the link goes live
+      </p>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="tab-panel" id="tab-timeline">
+    <div class="section-header">
+      <h2>Timeline & Deliverables</h2>
+    </div>
+    <div class="section-desc">
+      <strong>Month-by-month breakdown</strong> of expected activities, deliverables, and milestones. Niche edit placements begin in Month 1 for immediate impact, while new content placements ramp up from Month 2.
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="week m1">Month 1</div>
+        <div class="tl-content">
+          <h4>Foundation & First Placements</h4>
+          <p>
+            &#8226; Finalize target page list (pre-qualified article URLs with Ahrefs data)<br>
+            &#8226; Begin outreach for niche edits — target 2-3 link insertions<br>
+            &#8226; Set up HARO/Featured.com profiles and start responding to journalist queries<br>
+            &#8226; Submit 1 guest post pitch to Tier 2 contributor program<br>
+            &#8226; Identify OJCommerce landing pages for each backlink target<br>
+            &#8226; <strong>Deliverable:</strong> 4 live backlinks + placement report with URLs, traffic data, and anchor text
+          </p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="week m2">Month 2</div>
+        <div class="tl-content">
+          <h4>Steady Execution + Content Placements</h4>
+          <p>
+            &#8226; Continue niche edit outreach — 2-3 link insertions in ranking articles<br>
+            &#8226; 1-2 new content placements (guest post or HARO/expert quote)<br>
+            &#8226; First HARO placements expected (DR 80-95 sites)<br>
+            &#8226; Monthly reporting: all live links, referral traffic, keyword impact<br>
+            &#8226; <strong>Deliverable:</strong> 4 live backlinks + full monthly report with metrics
+          </p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="week m3">Month 3</div>
+        <div class="tl-content">
+          <h4>Optimized Targeting + Tier 1 Outreach</h4>
+          <p>
+            &#8226; 2-3 niche edits in high-traffic articles (DR 60-90+)<br>
+            &#8226; 1-2 new content placements on Tier 2 sites<br>
+            &#8226; Begin pitching Tier 1 publications with published writing samples<br>
+            &#8226; Referral traffic tracking and ROI analysis<br>
+            &#8226; <strong>Deliverable:</strong> 4 live backlinks + quarterly report with strategy recommendations
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h3>Expected Monthly Output</h3>
+      <p>
+        <strong>Niche Edits:</strong> 2-3 link insertions per month in existing ranking articles (DR 50-95)<br>
+        <strong>New Content:</strong> 1-2 guest posts, contributor articles, or HARO/expert quote placements per month (DR 60+)<br>
+        <strong>Total:</strong> 4 quality backlinks per month from relevant, traffic-driving sources<br><br>
+        <strong>Monthly Reporting Includes:</strong> Live link URLs, page traffic (before & after), ranking keywords, anchor text used, referral traffic data, and link status tracking.
+      </p>
+    </div>
+  </div>
+
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  OJCommerce Backlink Acquisition Proposal &bull; February 2026 &bull; Confidential
+</div>
+
+<script>
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tabId).classList.add('active');
+  event.target.closest('.nav-btn').classList.add('active');
+}
+</script>
+
+</body>
+</html>
